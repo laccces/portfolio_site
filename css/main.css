@@ -1,0 +1,34 @@
+/* Custom styles */
+
+/* Set a custom background color for the body */
+body {
+    background-color: #f8f9fa72;
+  }
+  
+  /* Style the h1 element */
+  h1 {
+    color: #343a40;
+  }
+  
+  /* Add some padding to the container */
+  .container {
+    padding: 1rem;
+  }
+  
+  /* Center the text in the footer */
+  footer {
+    text-align: center;
+  }
+  
+  /* Style links in the navbar */
+  .navbar-nav .nav-link {
+    color: #343a40;
+    font-weight: 500;
+  }
+  
+  /* Style the active link in the navbar */
+  .navbar-nav .nav-item.active .nav-link {
+    color: #fff;
+    background-color: #343a40;
+  }
+  
