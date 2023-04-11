@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Album</title>
+    <script>
+        async function fetchRandomAlbum() {
+            const response = await fetch('/random-album');
+            const album = await response.json();
+            if (album.error) {
+                document.getElementById('album-info').innerHTML = `
+                    <p>${album.error}</p>
+                `;
+                document.getElementById('review-form').style.display = 'none';
+            } else {
+                document.getElementById('album-info').innerHTML = `
+                    <p><strong>Artist:</strong> ${album.artist_name}</p>
+                    <p><strong>Album:</strong> ${album.album_name}</p>
+                    <p><strong>Year:</strong> ${album.year}</p>
+                `;
+                document.getElementById('album-id').value = album.id;
+                document.getElementById('review-form').style.display = 'block';
+            }
+        }
+
+        async function submitReview(event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const response = await fetch('/submit-review', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+
+            if (result.success) {
+                event.target.reset();
+                document.getElementById('review-form').style.display = 'none';
+                document.getElementById('album-info').innerHTML = '';
+                alert('Review submitted successfully!');
+            } else {
+                alert('Error submitting review. Please try again.');
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Random Album Generator</h1>
+    <button onclick="fetchRandomAlbum()">Get a random album</button>
+    <div id="album-info"></div>
+    <form id="review-form" onsubmit="submitReview(event)" style="display: none;">
+        <input type="hidden" name="album_id" id="album-id">
+        <label for="rating">Rating (out of 5):</label>
+        <input type="number" name="rating" id="rating" min="1" max="5" required>
+        <label for="review-text">Review (optional):</label>
+        <textarea name="review_text" id="review-text"></textarea>
+        <button type="submit">Submit Review</button>
+    </form>
+
+<a href="/reviewed-albums">View Reviewed Albums</a>
+
+</body>
+</html>
